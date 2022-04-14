@@ -39,7 +39,6 @@ export class Service {
   }
 
   async auth(dto: Shared.Dto.Auth.AuthAuthDto) {
-
     const findedUser = await this.userModel.findOne({ email: dto.email });
 
     if ( !findedUser )
@@ -51,13 +50,12 @@ export class Service {
       throw new Error('invalid user');
   
     const token = jwt.sign(
-      findedUser._id,
+      { _id: findedUser._id },
       process.env.PASSWORD_KEY,
       { expiresIn: '7d' }
     );
 
     return token;
-
   }
   
 }
