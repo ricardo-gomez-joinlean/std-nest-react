@@ -1,6 +1,5 @@
 import * as mongoose from "mongoose"
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import * as mongooseFieldEncryption  from "mongoose-field-encryption"
 
 import { Profile } from "../profile"
 
@@ -27,8 +26,3 @@ export class User {
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
-
-UserSchema.plugin(mongooseFieldEncryption.fieldEncryption, { 
-  fields: ["password"], 
-  secret: process.env.MONGOOSE_KEY_ENCRYPT,
-});

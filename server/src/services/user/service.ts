@@ -1,4 +1,5 @@
 import * as bcrypt from "bcrypt"
+import * as jwt from "jsonwebtoken"
 import { Model } from "mongoose"
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
@@ -15,6 +16,9 @@ export class Service {
   ) {}
 
   create(dto: Shared.Dto.User.UserCreateDto) {
+
+    dto.password = bcrypt.hashSync(dto.password, 10);
+
     return new this.userModel(dto).save();
   }
   
@@ -32,6 +36,28 @@ export class Service {
   
   deleteOne(_id: string) {
     return this.userModel.findOneAndUpdate({ _id }, { isDeleted: true }, { new: true });
+  }
+
+  async auth(dto: Shared.Dto.Auth.AuthAuthDto) {
+
+    const findedUser = await this.userModel.findOne({ email: dto.email });
+
+    if ( !findedUser )
+      throw new Error('invalid user');
+    
+    const isValidPassword = bcrypt.compareSync(dto.password, findedUser.password);
+   
+    if ( !isValidPassword )
+      throw new Error('invalid user');
+  
+    const token = jwt.sign(
+      findedUser._id,
+      process.env.PASSWORD_KEY,
+      { expiresIn: '7d' }
+    );
+
+    return token;
+
   }
   
 }
