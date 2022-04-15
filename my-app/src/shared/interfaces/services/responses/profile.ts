@@ -11,3 +11,8 @@ export interface IProfileSaveAsResponse {
 export interface IProfileFindOne {
   profile: Models.IProfile;
 }
+
+
+export interface IProfileFind {
+  profiles: Models.IProfile[];
+}

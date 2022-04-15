@@ -29,3 +29,12 @@ export class ProfileFindOne {
   profile: Schemas.Profile.Profile;
 
 }
+
+export class ProfileFind {
+
+  @ApiProperty({
+    example: [{ ...Stubs.Profile.profileAdminStub() }]
+  })
+  profiles: Schemas.Profile.Profile[];
+
+}

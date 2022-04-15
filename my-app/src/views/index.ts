@@ -1,2 +1,2 @@
 export * as Crud from "./crud"
-import * as Profile from "./profile"
+export * as Profile from "./profile"

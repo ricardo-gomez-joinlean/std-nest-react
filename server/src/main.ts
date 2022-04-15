@@ -20,6 +20,8 @@ async function bootstrap() {
   // CORS
   app.enableCors();
 
+  console.log(JSON.stringify(Stubs.Profile.profileAdminStub()));
+
   // Documentation
   const config = new DocumentBuilder()
     .setTitle('CRUD APP')

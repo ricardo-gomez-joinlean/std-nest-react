@@ -27,4 +27,8 @@ export class Service {
     return this.profileModel.findById(_id);
   }
 
+  find() {
+    return this.profileModel.find();
+  }
+
 }

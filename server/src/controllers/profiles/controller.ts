@@ -57,6 +57,26 @@ export class ProfileController {
       return error?.message;
     }
   }
+
+  @Get()
+  @ApiResponse({
+    status: 200,
+    type: Shared.Responses.Profile.ProfileFind
+  })
+  async find() {
+    try {
+
+      const profiles = await this.profileService.find();
+
+      return {
+        profiles
+      };
+      
+    } catch (error) {
+      console.log(error?.message);
+      return error?.message;
+    }
+  }
   
   @Get('/:id')
   @ApiResponse({

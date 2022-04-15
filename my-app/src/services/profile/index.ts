@@ -47,7 +47,21 @@ export const findOne = async (
   try {
 
     const resp = await axios
-      .get<Interfaces.Service.Response.Profile.IProfileFindOne>('profiles' + _id);
+      .get<Interfaces.Service.Response.Profile.IProfileFindOne>('profiles/' + _id);
+
+    return resp.data;
+    
+  } catch (error) {
+    console.log(error)
+    return false;
+  }
+}
+
+export const find = async () => {
+  try {
+
+    const resp = await axios
+      .get<Interfaces.Service.Response.Profile.IProfileFind>('profiles' );
 
     return resp.data;
     
