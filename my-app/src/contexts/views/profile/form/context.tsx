@@ -11,6 +11,8 @@ export type MainContextProps = {
   state: IMainState;
   getProfile: (profile: Interfaces.Models.IProfile) => void;
   isLoading: (loading: boolean) => void;
+  onChangeViewCheck: (name: string, value: boolean) => void;
+  onChangeDetailCheck: (accessName: string, name: string, value: boolean) => void;
 }
 
 export const MainContext = createContext<MainContextProps>({} as MainContextProps);

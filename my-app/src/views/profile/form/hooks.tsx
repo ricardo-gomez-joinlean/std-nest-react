@@ -7,7 +7,9 @@ export const useProfileFormListener = () => {
 
   const { 
     state, 
-    getProfile
+    getProfile,
+    onChangeViewCheck,
+    onChangeDetailCheck
   } = useContextListener();
 
   const navigate =  useNavigate();
@@ -33,6 +35,8 @@ export const useProfileFormListener = () => {
     state,
     onInitView,
     onNavigateEdit,
+    onChangeViewCheck,
+    onChangeDetailCheck
   }
 
 }

@@ -1,5 +1,5 @@
-import { VoidFunctionComponent } from "react";
-import { Form } from "react-bootstrap"
+import { useContext, VoidFunctionComponent } from "react";
+import { Form, Card, AccordionContext, useAccordionButton, Button,   } from "react-bootstrap"
 import { Accordion } from "react-bootstrap"
 import { Interfaces } from "../../../../../shared";
 import { useProfileFormListener } from "../../hooks"
@@ -7,7 +7,9 @@ import { useProfileFormListener } from "../../hooks"
 export const MainForm = () => {
 
   const {
-    state
+    state,
+    onChangeViewCheck,
+    onChangeDetailCheck
   } = useProfileFormListener();
 
   return (
@@ -21,57 +23,103 @@ export const MainForm = () => {
           type="text" 
           placeholder="Name" />
       </Form.Group>
-        <Accordion defaultActiveKey="0" >
+        <Accordion defaultActiveKey="0" alwaysOpen >
           {
             state.profile.access?.map( (item, index) => {
               return (
-                <Accordion.Item eventKey={index.toString()} >
-                  <Accordion.Header >
-                    <Form.Check 
-                      type="switch"
-                      checked={item.hasAccess}
-                    />
-                    View: {item.label}
-                  </Accordion.Header>
-                  <ViewProfileContent access={item} />
-                </Accordion.Item>
+                <Card  >
+                  <ViewProfileHeader
+                    onChange={(value) => onChangeViewCheck(item.name, value)}
+                    label={item.label}
+                    hasAccess={item.hasAccess}
+                    eventKey={index}
+                  />
+                  <ViewProfileContent
+                    onChange={(name, value) => onChangeDetailCheck(item.name, name, value)}
+                    key={index} 
+                    eventKey={index.toString()}
+                    access={item} />
+                </Card>
               )
             })
           }
-          
         </Accordion>
       </div>
     </div>
   )
 }
 
+interface IViewProfileHeader {
+  hasAccess: boolean;
+  label: string;
+  eventKey: number;
+  onChange: (value: boolean) => void;
+}
+
+export const ViewProfileHeader: VoidFunctionComponent<IViewProfileHeader> = (props) => {
+
+  const { activeEventKey } = useContext(AccordionContext);
+
+  const decoratedOnClick = useAccordionButton(
+    props.eventKey.toString(),
+    () => {
+      console.log('Custom')
+    },
+  );
+
+  return (
+    <Card.Header >
+      <div className="row">
+        <div className="col-10">
+          <Form.Check style={{ display: 'inline-block' }}
+            type="switch"
+            onChange={(e) => props.onChange(!props.hasAccess)}
+            checked={props.hasAccess}
+          />
+          View: {props.label}
+        </div>
+        <div className="col-2 text-end">
+          <Button 
+            onClick={decoratedOnClick}
+            size="sm" >Details</Button>
+        </div>
+      </div>
+    </Card.Header>
+  )
+}
+
 interface IViewProfileContentProps {
   access: Interfaces.Models.IProfileAccessView;
+  eventKey: string;
+  onChange: (name: string, value: boolean) => void;
 }
 
 export const ViewProfileContent: VoidFunctionComponent<IViewProfileContentProps> = (props) => {
-  
+
   const actions = props.access.actions;
 
   return (
-    <Accordion.Body>
-      <div className="row">
-        <div className="col-12">
-          {
-            actions.map( (item, index) => {
-              return (
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Check 
-                    type="switch"
-                    checked={item.hasAccess}
-                    label={item.label}
-                  />
-                </Form.Group>
-              )
-            })
-          }
+    <Accordion.Collapse eventKey={props.eventKey} >
+      <div className="container p-4">
+        <div className="row">
+          <div className="col-12">
+            {
+              actions.map( (item, index) => {
+                return (
+                  <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Check 
+                      type="switch"
+                      onChange={(e) => props.onChange(item.name, !item.hasAccess)}
+                      checked={item.hasAccess}
+                      label={item.label}
+                    />
+                  </Form.Group>
+                )
+              })
+            }
+          </div>
         </div>
       </div>
-    </Accordion.Body>
+    </Accordion.Collapse>
   )
 }
