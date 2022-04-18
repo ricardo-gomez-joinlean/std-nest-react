@@ -6,11 +6,11 @@ import { useProfileFormListener } from "../../hooks"
 export const Main = () => {
  
   const {
-    onInitView
+    onInitView,
+    onSave,
+    onSaveAs
   } = useProfileFormListener() 
 
-  const onSave = () => {}
-  const onSaveAs = () => {}
 
   useEffect(() => {
     onInitView();

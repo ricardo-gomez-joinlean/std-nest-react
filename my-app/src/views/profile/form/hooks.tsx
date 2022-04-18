@@ -9,8 +9,10 @@ export const useProfileFormListener = () => {
     state, 
     getProfile,
     onChangeViewCheck,
-    onChangeDetailCheck
+    onChangeDetailCheck,
+    onChangeInput
   } = useContextListener();
+
 
   const navigate =  useNavigate();
   const { id } = useParams();
@@ -31,12 +33,47 @@ export const useProfileFormListener = () => {
     navigate('/profiles/edit/' + _id);
   }
 
+  const onSave = async () => {
+
+    const resp = await Services.Profile.save(
+      id || '', 
+      { 
+        access: state.profile.access || [],
+        name: state.profile.name 
+      }
+    );
+
+    if ( resp ) {
+
+      navigate('/profiles');
+
+    }
+
+  }
+
+  const onSaveAs = async () => {
+    
+    const resp = await Services.Profile.saveAs({
+      ...state.profile,
+      access: [ ...state.profile.access || [] ]
+    });
+
+    if ( resp ) {
+
+
+      navigate('/profiles');
+    }
+
+  }
+
   return {
     state,
     onInitView,
     onNavigateEdit,
     onChangeViewCheck,
-    onChangeDetailCheck
+    onChangeDetailCheck,
+    onChangeInput,
+    onSave,
+    onSaveAs,
   }
-
 }

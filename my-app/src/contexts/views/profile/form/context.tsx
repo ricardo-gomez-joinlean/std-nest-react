@@ -13,6 +13,7 @@ export type MainContextProps = {
   isLoading: (loading: boolean) => void;
   onChangeViewCheck: (name: string, value: boolean) => void;
   onChangeDetailCheck: (accessName: string, name: string, value: boolean) => void;
+  onChangeInput: (name: string, value: string) => void;
 }
 
 export const MainContext = createContext<MainContextProps>({} as MainContextProps);

@@ -50,6 +50,11 @@ export class ProfileSaveDto {
   @ApiProperty({ example: exampleData.access })
   access: AccessViewDto[];
 
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({ example: exampleData.name })
+  name: string;
+
 }
 
 export class ProfileSaveAsDto {

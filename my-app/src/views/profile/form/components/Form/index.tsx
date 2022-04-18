@@ -9,7 +9,8 @@ export const MainForm = () => {
   const {
     state,
     onChangeViewCheck,
-    onChangeDetailCheck
+    onChangeDetailCheck,
+    onChangeInput,
   } = useProfileFormListener();
 
   return (
@@ -18,16 +19,17 @@ export const MainForm = () => {
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>Profile name</Form.Label>
         <Form.Control 
+          onChange={(e) => onChangeInput(e.target.name, e.target.value)}
           value={state.profile.name}
           name="name"
           type="text" 
           placeholder="Name" />
       </Form.Group>
-        <Accordion defaultActiveKey="0" alwaysOpen >
+        <Accordion  alwaysOpen >
           {
             state.profile.access?.map( (item, index) => {
               return (
-                <Card  >
+                <Card>
                   <ViewProfileHeader
                     onChange={(value) => onChangeViewCheck(item.name, value)}
                     label={item.label}
@@ -38,7 +40,8 @@ export const MainForm = () => {
                     onChange={(name, value) => onChangeDetailCheck(item.name, name, value)}
                     key={index} 
                     eventKey={index.toString()}
-                    access={item} />
+                    access={item} 
+                  />
                 </Card>
               )
             })
@@ -62,9 +65,7 @@ export const ViewProfileHeader: VoidFunctionComponent<IViewProfileHeader> = (pro
 
   const decoratedOnClick = useAccordionButton(
     props.eventKey.toString(),
-    () => {
-      console.log('Custom')
-    },
+    () => {},
   );
 
   return (
@@ -104,7 +105,7 @@ export const ViewProfileContent: VoidFunctionComponent<IViewProfileContentProps>
         <div className="row">
           <div className="col-12">
             {
-              actions.map( (item, index) => {
+              actions.map( (item) => {
                 return (
                   <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Check 

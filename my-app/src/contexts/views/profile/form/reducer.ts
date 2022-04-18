@@ -8,6 +8,7 @@ type IActions =
   | { type: "setLoading", payload: boolean }
   | { type: "onChangeViewCheck", payload: { name: string, value: boolean } }
   | { type: "onChangeDetailCheck", payload: { accessName: string, name: string, value: boolean } }
+  | { type: "onChangeInput", payload: { name: string, value: string } }
 
 export const reducer = (state: IMainState, action: IActions ): IMainState => {
 
@@ -38,9 +39,34 @@ export const reducer = (state: IMainState, action: IActions ): IMainState => {
   
       if ( newState.profile.access ) {
         
-        const accessIndex = newState.profile.access.findIndex( item => item.name === name );
+        const accessIndex = newState
+          .profile
+          .access
+          .findIndex( item => item.name === name );
   
-        newState.profile.access[accessIndex].hasAccess = value;
+        newState
+          .profile
+          .access[accessIndex]
+          .hasAccess = value;
+
+        newState
+          .profile
+          .access[accessIndex]
+          .actions
+          .forEach((item, index) => {
+            
+            if ( newState.profile.access ) {
+
+              newState
+                .profile
+                .access[accessIndex]
+                .actions[index]
+                .hasAccess = value;
+
+            }
+
+          })
+
   
       }
   
@@ -83,7 +109,18 @@ export const reducer = (state: IMainState, action: IActions ): IMainState => {
 
     }
 
-    
+    case 'onChangeInput': {
+      
+      const { name, value } = action.payload;
+   
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          [name]: value
+        }
+      }
+    }
 
     default:
 

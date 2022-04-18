@@ -18,14 +18,24 @@ export const MainProvider: FunctionComponent = (props) => {
   
   const [state, dispatch] = useReducer(reducer, initState);
 
-  const getProfile = (profile: Interfaces.Models.IProfile) => { dispatch({ type: 'getProfile', payload: profile }) }
+  const getProfile = (profile: Interfaces.Models.IProfile) => { 
+    dispatch({ type: 'getProfile', payload: profile }) 
+  }
   
-  const isLoading = (loading: boolean) => { dispatch({ type: 'setLoading', payload: loading }) }
+  const isLoading = (loading: boolean) => { 
+    dispatch({ type: 'setLoading', payload: loading }) 
+  }
   
-  const onChangeViewCheck = (name: string, value: boolean) => { dispatch({ type: 'onChangeViewCheck', payload: { name, value } }) }
+  const onChangeViewCheck = (name: string, value: boolean) => { 
+    dispatch({ type: 'onChangeViewCheck', payload: { name, value } }) 
+  }
 
   const onChangeDetailCheck = (accessName: string, name: string, value: boolean) => {
     dispatch({ type: 'onChangeDetailCheck', payload: { accessName, name, value } });
+  }
+
+  const onChangeInput = (name: string, value: string) => {
+    dispatch({ type: 'onChangeInput', payload: { name, value } });
   }
 
   return (
@@ -34,7 +44,8 @@ export const MainProvider: FunctionComponent = (props) => {
       getProfile,
       isLoading,
       onChangeViewCheck,
-      onChangeDetailCheck
+      onChangeDetailCheck,
+      onChangeInput
     }} >
       {props.children}
     </MainContext.Provider>

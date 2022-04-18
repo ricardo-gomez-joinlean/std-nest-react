@@ -29,7 +29,7 @@ export const saveAs = async (
 
     const resp = await axios
       .post<Interfaces.Service.Response.Profile.IProfileSaveAsResponse>(
-        'profiles',
+        'profiles/as',
         dto
       );
 
